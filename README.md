@@ -20,18 +20,18 @@ python3 -m venv <path to virtual env>
 4. Install Project dependencies
 
 ```bash
-    pip install -r frf/requirements.txt
+    pip install -r player-service-app/requirements.txt
 ```
 
 5. Run application
 
 ```bash
-python frf/app.py
+python player-service-app/app.py
 ```
 
 Now you can run the curl command or run on postman
 
 ```bash
-curl http://127.0.0.1:5000/v1/players
-curl http://127.0.0.1:5000/v1/players/1
+curl http://127.0.0.1:8000/v1/players
+curl http://127.0.0.1:8000/v1/players/1
 ```
