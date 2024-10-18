@@ -51,3 +51,8 @@ We recommend creating a Gitpod **Classic** account
 - Click on the below link to open this repository in Gitpod
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Intuit-A4A/player-service-python)
+
+- Select the IDE of your choice. We recommend `VSCode IDE in browser`
+- Standard Configuration
+- Click `Continue`
+![Screenshot 2024-10-18 at 10 49 59 AM](https://github.com/user-attachments/assets/cf97589f-e84b-48e3-b691-2248c437d884)  
