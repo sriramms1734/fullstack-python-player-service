@@ -1,4 +1,4 @@
-# Player Servuce
+# Player Service
 
 Player service is a spring boot based microservice which serves the contents of Player.csv through a REST API. The app contains `player-service-model` which is a traditional AI model trained with `Player.csv` data. 
 
