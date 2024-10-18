@@ -1,11 +1,11 @@
-# A4A Teams model
+# Player Service Model
 
 This is a thin model wrapper container based on PlayerDB. 
 
 To build and run:
 ```shell
 docker build -t a4a_model .
-docker run --rm -p 5000:5000  -it localhost/a4a_model:latest
+docker run -d -p 5000:5000 a4a_model
 ```
 
 This will expose port 5000.
