@@ -55,4 +55,5 @@ We recommend creating a Gitpod **Classic** account
 - Select the IDE of your choice. We recommend `VSCode IDE in browser`
 - Standard Configuration
 - Click `Continue`
+  
 ![Screenshot 2024-10-18 at 10 49 59 AM](https://github.com/user-attachments/assets/cf97589f-e84b-48e3-b691-2248c437d884)  
