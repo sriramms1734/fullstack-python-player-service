@@ -85,3 +85,19 @@ This will run the `player-service-model` on port 5000.
 2. Test Ollama API server
 
     - `curl -v --location 'http://localhost:11434/api/generate' --header 'Content-Type: application/json' --data '{"model": "tinyllama","prompt": "why is the sky blue?", "stream": false}'`
+
+### Run with Gitpod
+
+This app can also be run in Gitpod. We recommend running using Gitpod to build and run this app on the browser. To run this app in Gitpod you will need -
+- Github account
+- Gitpod Classic account
+
+Click on the below link to open this repository in Gitpod
+
+   [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Intuit-A4A/player-service-python)
+
+- Select the IDE of your choice. We recommend `VSCode IDE in browser`
+- Standard Configuration
+- Click `Continue`
+
+![Screenshot 2024-10-18 at 10 49 59 AM](https://github.com/user-attachments/assets/cf97589f-e84b-48e3-b691-2248c437d884)  
