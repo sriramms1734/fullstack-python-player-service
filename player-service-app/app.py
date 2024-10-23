@@ -3,6 +3,7 @@ import pandas as pd
 import sqlite3
 from sqlalchemy import create_engine
 from player_service import PlayerService
+import ollama
 
 app = Flask(__name__)
 
@@ -37,6 +38,10 @@ def query_player_country(birth_country):
         return jsonify({"error": "No record found with birth_country={}".format(birth_country)})
     else:
         return jsonify(result)
+
+@app.route('/v1/list-models')
+def query_player_country(birth_country):
+    return jsonify(ollama.list())
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)

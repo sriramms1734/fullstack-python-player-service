@@ -7,14 +7,13 @@ Player service is a Python Flask based microservice which serves the contents of
 
 - Serve the contents of `Player.csv` through a REST API
 - In memory SQL database
-- Integrate with Ollma using Ollama-python library
+- Integration with Ollama using Ollama-python library
 
 ### API Endpoints
 - `GET /v1/players` - returns the list of all players.
 - `GET /v1/players/{player_id}` - returns a single player by ID.
 - `GET /v1/players/{birth_country}` - returns a single player by ID.
-- `GET /v1/chat/list-models` - returns the list of Ollama models available.
-- `POST /v1/chat/` - Endpoint to chat with the available Ollama model
+- `GET /v1/list-models` - returns the list of available LLM models. Refer to section `GenAI Integration with Ollama`.
 
 The database connected to this service is `in-memory H2 Database`.
 
