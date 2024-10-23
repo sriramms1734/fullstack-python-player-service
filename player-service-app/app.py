@@ -40,7 +40,7 @@ def query_player_country(birth_country):
         return jsonify(result)
 
 @app.route('/v1/list-models')
-def query_player_country(birth_country):
+def list_models():
     return jsonify(ollama.list())
 
 if __name__ == '__main__':
