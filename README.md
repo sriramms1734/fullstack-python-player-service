@@ -11,8 +11,8 @@ Player service is a Python Flask based microservice which serves the contents of
 
 ### API Endpoints
 - `GET /v1/players` - returns the list of all players.
-- `GET /v1/players/{player_id}` - returns a single player by ID.
-- `GET /v1/players/{birth_country}` - returns a single player by ID.
+- `GET /v1/players/{player_id}` - returns a single player by `player_id`.
+- `GET /v1/players/{birth_country}` - returns a single player by `birth_country`.
 - `GET /v1/list-models` - returns the list of available LLM models. Refer to section `GenAI Integration with Ollama`.
 
 The database connected to this service is `in-memory H2 Database`.
@@ -26,7 +26,7 @@ The database connected to this service is `in-memory H2 Database`.
   - `requirements.txt`: Python dependencies
 - `/player-service-model` Traditional AI model trained using `Player.csv`. You are not expected to edit the model.
 
-## Technology Technology Stack
+## Technology Stack
 
 - Python 3.9+
 - Docker

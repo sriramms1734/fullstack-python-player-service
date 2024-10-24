@@ -1,6 +1,6 @@
 # Player Service Model
 
-This is a thin model wrapper container based on PlayerDB. 
+This is a thin model wrapper container based on `Player.csv` data. 
 
 To build and run:
 ```shell
