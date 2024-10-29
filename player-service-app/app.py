@@ -29,19 +29,20 @@ def query_player_id(player_id):
     else:
         return jsonify(result)
 
-@app.route('/v1/players/country/<string:birth_country>')
-def query_player_country(birth_country):
-    player_service = PlayerService()
-    result = player_service.search_by_country(birth_country)
-
-    if len(result) == 0:
-        return jsonify({"error": "No record found with birth_country={}".format(birth_country)})
-    else:
-        return jsonify(result)
-
-@app.route('/v1/list-models')
+@app.route('/v1/chat/list-models')
 def list_models():
     return jsonify(ollama.list())
+
+@app.route('/v1/chat', methods=['POST'])
+def chat():
+    # Process the data as needed
+    response = ollama.chat(model='tinyllama', messages=[
+        {
+            'role': 'user',
+            'content': 'Why is the sky blue?',
+        },
+    ])
+    return jsonify(response), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
