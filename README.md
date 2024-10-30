@@ -28,6 +28,12 @@ Player Service App
 - Css
 
 # 🔨 Installation
-- Refer to [Player Service Backend README](player-service-backend/README.md) for backend setup instructions.
-- Refer to [Player Service UI README](players-ui-react/README.md) for frontend setup instructions.
+1. Clone this repository or Download the code as zip
+
+2. Set up backend app
+    - Refer to [player-service-backend README](player-service-backend/README.md) for backend app setup instructions.
+
+3. Set up frontend app
+    - Refer to [players-ui-react README](players-ui-react/README.md) for frontend setup instructions.
+
 
