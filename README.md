@@ -11,7 +11,10 @@ Player Service is a lightweight fullstack app built using Spring Boot for the ba
 
 # ✨ Introduction
 
-Screenshot of the app running
+Player Service App
+
+<img width="1349" alt="Screenshot 2024-10-29 at 11 00 29 PM" src="https://github.com/user-attachments/assets/b1cadc82-0484-4328-8170-018eedfac327">
+
 
 # 👨‍💻 Tech stack
 
