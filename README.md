@@ -3,12 +3,6 @@
 Player Service is a lightweight fullstack app built using Spring Boot for the backend and React for the frontend app. Player service backend app serves as a simple way to access player information stored in a `Player.csv` file and makes this data available through a RESTful APIs. These APIs are used by Player Service UI app to show player information.
 </p>
 
-<p align="center">
-<a href="#introduction">Introduction</a> &nbsp;&bull;&nbsp;
-<a href="#backend">Installation</a> &nbsp;&bull;&nbsp;
-<a href="#frontend">Documentation</a>
-</p>
-
 # ✨ Introduction
 
 Player Service App
