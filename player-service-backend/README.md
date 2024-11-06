@@ -27,7 +27,7 @@ Player Service is a backend application that serves baseball player data. In add
 ### Part 1: Application Dependencies
 
 1. Install application dependencies
-    - Move into the project's root directory, run: `cd player-service-backend`.
+    - Move into the project's backend app directory, run: `cd player-service-backend`.
     - From the project's root directory, run: `mvn clean install -DskipTests`
 
 ### Part 2: Run Player Service (without LLM)
