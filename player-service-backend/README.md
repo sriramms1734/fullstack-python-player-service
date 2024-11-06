@@ -46,7 +46,7 @@ Player Service is a backend application that serves baseball player data. In add
     ```
 
 2. Verify the Player service is running
-      1. Open your browser and visit `http://localhost:8080/v1/players/`
+      1. Open your browser and visit `http://localhost:8080/v1/players`
       2. If the application is running successfully, you will see player data appear in the browser
 
 ### Part 3: Start LLM Docker Container
