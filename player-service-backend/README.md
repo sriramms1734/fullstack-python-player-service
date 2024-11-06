@@ -22,15 +22,12 @@ Player Service is a backend application that serves baseball player data. In add
       - Download and install from [docker.com](https://www.docker.com/)
       - Verify installation, run: `docker --version`
 
-2. Clone this repository or Download the code as zip
-   - run `git clone https://github.com/Intuit-A4A/player-service-java.git`
-
 ## Run the application
 
 ### Part 1: Application Dependencies
 
 1. Install application dependencies
-    - Move into the project's root directory, run: `cd player-service-java`.
+    - Move into the project's root directory, run: `cd player-service-backend`.
     - From the project's root directory, run: `mvn clean install -DskipTests`
 
 ### Part 2: Run Player Service (without LLM)
