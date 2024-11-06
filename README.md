@@ -17,6 +17,7 @@ Player Service App
 - Maven
 - Spring Boot 3.3.4 (with Spring Web MVC, Spring Data JPA)
 - H2 Database
+- [Docker](https://www.docker.com/)
 - [Ollama4j SDK](https://ollama4j.github.io/ollama4j/intro)
 
 ## Frontend
