@@ -38,10 +38,6 @@ Player Service is a backend application that serves baseball player data. In add
    mvn spring-boot:run
    ```
 
-    ```
-    mvn clean install
-    ```
-
 2. Verify the Player service is running
       1. Open your browser and visit `http://localhost:8080/v1/players`
       2. If the application is running successfully, you will see player data appear in the browser
@@ -60,10 +56,10 @@ Player service integrates with Ollama 🦙, which allows us to run LLMs locally.
     docker pull ollama/ollama
     ```
 
-2. Run Ollama docker image on port 11434
+2. Run Ollama docker image on port 11434 as a background process
 
     ```shell
-    docker run -it -v ~/ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+    docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
     ```
 
 3. Download and run `tinyllama` model
