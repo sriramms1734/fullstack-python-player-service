@@ -17,7 +17,7 @@ Player Service App
 - Flask
 - sqllite3
 - [Docker](https://www.docker.com/)
-- [Ollama4j SDK](https://ollama4j.github.io/ollama4j/intro)
+- [Ollama Python SDK](https://github.com/ollama/ollama-python)
 
 ## Frontend
 - React
