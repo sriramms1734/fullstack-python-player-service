@@ -17,7 +17,7 @@ df.to_sql('players', con=engine, if_exists='replace', index=False)
 def get_players():
     player_service = PlayerService()
     result = player_service.get_all_players()
-    return result
+    return {"players": result}
 
 @app.route('/v1/players/<string:player_id>')
 def query_player_id(player_id):
@@ -25,9 +25,9 @@ def query_player_id(player_id):
     result = player_service.search_by_player(player_id)
 
     if len(result) == 0:
-        return jsonify({"error": "No record found with player_id={}".format(player_id)})
+        return {"error": "No record found with player_id={}".format(player_id)}
     else:
-        return jsonify(result)
+        return {"player": result}
 
 @app.route('/v1/chat/list-models')
 def list_models():
