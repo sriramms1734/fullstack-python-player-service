@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 nn_model = joblib.load("team_model.joblib")
 player_db = pd.read_csv("features_db.csv")
-all_players = set(player_db["playerID"])
+all_players = set(player_db["playerId"])
 features = ["birthZ", "heightZ", "weightZ", "batsN", "throwsN"]
 
 @dataclasses.dataclass
@@ -87,7 +87,7 @@ def generate_team(body: TeamGenerateInput) -> TeamGenerateOutput:
     seed = body.seed_id
     if body.seed_id:
         try:
-            seed_features = player_db[player_db.playerID == seed][features]
+            seed_features = player_db[player_db.playerId == seed][features]
         except:
             raise TeamException(f"The seed {body.seed_id} has no associated player")
     elif body.features:
@@ -106,7 +106,7 @@ def generate_team(body: TeamGenerateInput) -> TeamGenerateOutput:
     # run exclusions
     print(f"{seed=} {seed_features=} has {exclude_db.get(seed)=}")
     member_ids = [m
-                  for m in list(player_db.take(member_indices[0])["playerID"])
+                  for m in list(player_db.take(member_indices[0])["playerId"])
                   if m not in exclude_db.get(seed, set())]
     print(f"{member_ids=}")
 

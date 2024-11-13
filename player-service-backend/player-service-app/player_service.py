@@ -8,24 +8,24 @@ class PlayerService:
         self.cursor = conn.cursor()
 
     def get_all_players(self):
-
         query = "SELECT * FROM players"
-        result = self.cursor.execute(query).fetchall()
+        players = self.cursor.execute(query).fetchall()
+        columns = [column[0] for column in self.cursor.description]
+        response = []
 
-        return result
+        for player in players:
+            response.append(dict(zip(columns,player)))
+
+        return response
 
     def search_by_player(self, player_id):
+        query = "SELECT * FROM players WHERE playerId='{}'".format(player_id)
+        players = self.cursor.execute(query).fetchall()
+        columns = [column[0] for column in self.cursor.description]
+        response = []
 
-        query = "SELECT * FROM players WHERE playerID='{}'".format(player_id)
-        result = self.cursor.execute(query).fetchall()
+        for player in players:
+            response.append(dict(zip(columns,player)))
 
-        return result
-
-
-    def search_by_country(self, birth_country):
-
-        query = "SELECT * FROM players WHERE birthCountry='{}'".format(birth_country)
-        result = self.cursor.execute(query).fetchall()
-
-        return result
+        return response
 

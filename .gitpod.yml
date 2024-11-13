@@ -18,5 +18,5 @@ tasks:
 ports:
   - port: 5000
     onOpen: open-preview
-  - port: 8000
+  - port: 8080
     onOpen: open-preview

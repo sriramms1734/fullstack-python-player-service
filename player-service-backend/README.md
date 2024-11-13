@@ -26,13 +26,14 @@ Player Service is a backend application that serves baseball player data. In add
 ### Part 1: Application Dependencies
 
 *OPTIONAL* Create & activate virtual env
+
 ```shell
    $ python3 -m venv env # use `python -m venv env` on Windows
    $ source env/bin/activate  # use `env\Scripts\activate` on Windows
 ```
 
 1. Install application dependencies
-    - Move into the project's root directory, run: `cd player-service-app`.
+    - Move into the project's root directory, run: `cd player-service-fullstack-python/player-service-backend/player-service-app`.
     - From the project's root directory, run: `pip install -r requirements.txt`
 
 ### Part 2: Run Player Service (without LLM)
@@ -44,7 +45,7 @@ Player Service is a backend application that serves baseball player data. In add
    ```
 
 2. Verify the Player service is running
-      1. Open your browser and visit `http://localhost:8000/v1/players`
+      1. Open your browser and visit `http://localhost:8080/v1/players`
       2. If the application is running successfully, you will see player data appear in the browser
 
 ### Part 3: Start LLM Docker Container
@@ -87,5 +88,5 @@ Player service integrates with Ollama 🦙, which allows us to run LLMs locally.
    python3 app.py
     ```
 
-2. Open your browser and visit `http://localhost:8000/v1/chat/list-models`
+2. Open your browser and visit `http://localhost:8080/v1/chat/list-models`
    - If the application is running successfully, you will see a json response that include information about tinyllama
