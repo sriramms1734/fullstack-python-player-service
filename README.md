@@ -1,91 +1,39 @@
-# ⚾ Player Service
+# ⚾ Player Service App
+<p align="center">
+Player Service is a lightweight fullstack app built using Spring Boot for the backend and React for the frontend app. Player service backend app serves as a simple way to access player information stored in a `Player.csv` file and makes this data available through a RESTful APIs. These APIs are used by Player Service UI app to show player information.
+</p>
 
-Player Service is a backend application that serves baseball player data. In addition, Player service integrates with [Ollama](https://github.com/ollama/ollama/blob/main/docs/api.md), which allows us to run the [tinyllama LLM]((https://ollama.com/library/tinyllama)) locally.
+# ✨ Introduction
 
-## Dependencies
+Player Service App
 
-- Python3.9+
+<img width="1349" alt="Screenshot 2024-10-29 at 11 00 29 PM" src="https://github.com/user-attachments/assets/b1cadc82-0484-4328-8170-018eedfac327">
+
+
+# 👨‍💻 Tech stack
+
+## Backend
+- Python 3
+- Flask
 - sqllite3
-- Docker
-- [Ollama Python SDK](https://github.com/ollama/ollama-python)
+- [Docker](https://www.docker.com/)
+- [Ollama4j SDK](https://ollama4j.github.io/ollama4j/intro)
 
-## 🛠️ Setup Instructions
+## Frontend
+- React
+- NPM
+- Node.js (version 18.20.2)
+    - Download and install from [nodejs.org](https://nodejs.org/)
+    - Verify installation: `node --version`
+- Css
 
-1. Verify system dependencies
-   1. Python
-      - Verify installation: `python3 --version`
-   3. Docker
-      - Download and install from [docker.com](https://www.docker.com/)
-      - Verify installation, run: `docker --version`
+# 🔨 Installation
+1. Clone this repository or Download the code as zip
 
-2. Clone this repository or Download the code as zip
-   - run `git clone https://github.com/Intuit-A4A/player-service-python.git`
+2. Set up backend app
+    - Refer to [player-service-backend README](player-service-backend/README.md) for backend app setup instructions.
 
-## Run the application
+3. Set up frontend app
+    - Refer to [players-ui-react README](players-ui-react/README.md) for frontend setup instructions.
 
-### Part 1: Application Dependencies
 
-*OPTIONAL* Create & activate virtual env
-```shell
-   $ python3 -m venv env # use `python -m venv env` on Windows
-   $ source env/bin/activate  # use `env\Scripts\activate` on Windows
-```
-
-1. Install application dependencies
-    - Move into the project's root directory, run: `cd player-service-app`.
-    - From the project's root directory, run: `pip install -r requirements.txt`
-
-### Part 2: Run Player Service (without LLM)
-
-1. Start the Player service
-
-   ```shell
-    python3 app.py
-   ```
-
-2. Verify the Player service is running
-      1. Open your browser and visit `http://localhost:8000/v1/players`
-      2. If the application is running successfully, you will see player data appear in the browser
-
-### Part 3: Start LLM Docker Container
-
-Player service integrates with Ollama 🦙, which allows us to run LLMs locally. This app runs [tinyllama](https://ollama.com/library/tinyllama) model.
-
-- [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
-- [Ollama Python SDK](https://github.com/ollama/ollama-python)
-
-1. Pull and run Ollama docker image and download `tinyllama` model
-   - Pull Ollama docker image
-
-    ```shell
-    docker pull ollama/ollama
-    ```
-
-2. Run Ollama docker image on port 11434 as a background process
-
-    ```shell
-    docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-    ```
-
-3. Download and run `tinyllama` model
-
-    ```shell
-    docker exec -it ollama ollama run tinyllama
-    ```
-
-4. Test Ollama API server
-
-    ```curl
-    curl -v --location 'http://localhost:11434/api/generate' --header 'Content-Type: application/json' --data '{"model": "tinyllama","prompt": "why is the sky blue?", "stream": false}'
-    ```
-
-### Part 4: Verify Player Service and LLM Integration
-
-1. Ensure Player Service is running
-
-    ```shell
-   python3 app.py
-    ```
-
-2. Open your browser and visit `http://localhost:8000/v1/chat/list-models`
-   - If the application is running successfully, you will see a json response that include information about tinyllama
