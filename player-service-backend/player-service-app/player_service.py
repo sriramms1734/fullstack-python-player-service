@@ -28,4 +28,36 @@ class PlayerService:
             response.append(dict(zip(columns,player)))
 
         return response
+    
+    # sriram
+    def update_column(self, id, colName, value):
+        query = "UPDATE players SET weight=? WHERE playerId = ?"
+
+        self.cursor.execute(query,(value, id,))
+        self.conn.commit()
+    
+    # sriram
+    def search_fuzzy_text_player(self, text):
+        text = "%{}%".format(text)  # Prepare the text for the LIKE clause
+        query = "SELECT * FROM players WHERE (coalesce(playerId, '') || coalesce(nameGiven, '')) LIKE ?"
+        players = self.cursor.execute(query, (text,)).fetchall()
+        columns = [column[0] for column in self.cursor.description]
+        response = []
+
+        for player in players:
+            response.append(dict(zip(columns,player)))
+
+        return response
+    
+    # sriram
+    def search_by_player_name(self, name):
+        query = "SELECT * FROM players WHERE nameGiven LIKE '%{}%'".format(name)
+        players = self.cursor.execute(query).fetchall()
+        columns = [column[0] for column in self.cursor.description]
+        response = []
+
+        for player in players:
+            response.append(dict(zip(columns,player)))
+
+        return response
 

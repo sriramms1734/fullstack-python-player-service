@@ -8,6 +8,8 @@ import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify
 from flask_pydantic import validate
+from flask_cors import CORS
+
 import joblib
 from pydantic import BaseModel
 
@@ -34,7 +36,7 @@ player_stats = {
 exclude_db = {}
 
 app = Flask(__name__)
-
+CORS(app, resources={"/team/generate": {"origins": "*"}})
 
 class TeamException(Exception):
     pass
