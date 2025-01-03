@@ -30,6 +30,12 @@
     margin-top: 2vh;
     gap: 2vh;
 }
+.player-results-generate-team {
+    display: flex;
+    justify-content: center;
+    margin-top: 6vh;
+    gap: 4vh;
+}
 .player-results-search {
     gap: 1vh;
     display: flex;
