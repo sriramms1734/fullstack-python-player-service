@@ -50,8 +50,8 @@ class PlayerService:
         return response
     
     # sriram
-    def search_by_player_name(self, name):
-        query = "SELECT * FROM players WHERE nameGiven LIKE '%{}%'".format(name)
+    def search_by_country(self, name):
+        query = "SELECT * FROM players WHERE birthCountry LIKE '%{}%'".format(name)
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []

@@ -26,7 +26,7 @@ def query_player_id(player):
         result = player_service.search_by_player(player) 
     # sriram
     if len(result) == 0:
-        result = player_service.search_by_player_name(player)
+        result = player_service.search_by_country(player)
         if len(result) == 0:
             return {"error": "No record found with player={}".format(player)}
         else: 
