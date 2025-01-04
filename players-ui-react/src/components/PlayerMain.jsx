@@ -1,6 +1,6 @@
 import logo from '../assets/logo.svg';
 import '../styling/PlayersMain.css';
-import PlayerResults from "./PlayersResults";
+import PlayerResults  from "./PlayersResults";
 
 function PlayerMain() {
     return (

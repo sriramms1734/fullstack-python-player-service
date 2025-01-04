@@ -32,9 +32,9 @@
 }
 .player-results-generate-team {
     display: flex;
-    justify-content: center;
-    margin-top: 6vh;
-    gap: 4vh;
+    gap: 10px; /* Optional: Adds spacing between items */
+    margin-top: 2vh;
+    gap: 2vh;
 }
 .player-results-search {
     gap: 1vh;
