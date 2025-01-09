@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, url_for
 import pandas as pd
 import sqlite3
 from sqlalchemy import create_engine
 from player_service import PlayerService
 import ollama
+import requests
 
 app = Flask(__name__)
 
@@ -66,13 +67,13 @@ def list_models():
 def chat():
     # Process the data as needed
     try:
-        response = ollama.chat(model='tinyllama', messages=[
-            {
-                'role': 'user',
-                'content': 'Why is the sky blue?',
-            },
-        ])
-        return jsonify({"response": str(response)}), 200
+        target_url = f"http://localhost:{5000}/llm/generate"
+        data = request.get_json()
+        data['system_prompt'] = data['content']
+        data['user_prompt'] = ''
+        response = requests.post(target_url, json=data)
+        # Return the response from the target server
+        return jsonify(response.json()), response.status_code
     except Exception as e:
         # Handle errors and return an appropriate response
         return jsonify({"error": str(e)}), 500
