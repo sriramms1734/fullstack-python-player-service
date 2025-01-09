@@ -9,7 +9,7 @@ export default async function fetchData(ep) {
 };
 
 export async function postData(bodyInput) {
-    const endpoint = 'http://localhost:11434/team/generate';
+    const endpoint = 'http://localhost:5200/team/generate';
     try {
         const response = await fetch(endpoint, {
             method: "POST",

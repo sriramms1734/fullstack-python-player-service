@@ -65,13 +65,17 @@ def list_models():
 @app.route('/v1/chat', methods=['POST'])
 def chat():
     # Process the data as needed
-    response = ollama.chat(model='tinyllama', messages=[
-        {
-            'role': 'user',
-            'content': 'Why is the sky blue?',
-        },
-    ])
-    return jsonify(response), 200
+    try:
+        response = ollama.chat(model='tinyllama', messages=[
+            {
+                'role': 'user',
+                'content': 'Why is the sky blue?',
+            },
+        ])
+        return jsonify({"response": str(response)}), 200
+    except Exception as e:
+        # Handle errors and return an appropriate response
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=False)

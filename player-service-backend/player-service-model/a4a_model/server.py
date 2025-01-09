@@ -3,6 +3,7 @@ import random
 import time
 import uuid
 from typing import Literal, Optional
+import sqlite3
 
 import numpy as np
 import pandas as pd
@@ -12,6 +13,9 @@ from flask_cors import CORS
 
 import joblib
 from pydantic import BaseModel
+import ollama
+import sys
+from sqlalchemy import create_engine
 
 nn_model = joblib.load("team_model.joblib")
 player_db = pd.read_csv("features_db.csv")
@@ -107,6 +111,7 @@ def generate_team(body: TeamGenerateInput) -> TeamGenerateOutput:
     member_indices = nn_model.kneighbors(seed_features, team_size, return_distance=False)
     # run exclusions
     print(f"{seed=} {seed_features=} has {exclude_db.get(seed)=}")
+    print(f"list of player_db {list(player_db.take(member_indices[0]))}")
     member_ids = [m
                   for m in list(player_db.take(member_indices[0])["playerId"])
                   if m not in exclude_db.get(seed, set())]
@@ -128,14 +133,22 @@ def team_feedback(body: TeamFeedbackInput) -> TeamFeedbackOutput:
     accepted = True
     if seed_id not in all_players:
         accepted = False
+        raise TeamException(f"Seed ID '{seed_id}' is invalid or not found in the player database.")
+    if member_id not in all_players:
+        accepted = False
+        raise TeamException(f"Seed ID '{member_id}' is invalid or not found in the player database.")
     elif body.feedback < 0:
         if seed_id in exclude_db:
             exclude_db[seed_id].add(member_id)
         else:
             exclude_db[seed_id] = {member_id}
-    # Implement logic to process feedback for a team
+        accepted = True
+    else:
+        accepted = True
+    print(f"Feedback processed: seed_id={seed_id}, member_id={member_id}, feedback={body.feedback}")
     return TeamFeedbackOutput(
         seed_id=seed_id,
+        prediction_id=str(uuid.uuid4()),
         member_id=member_id,
         accepted=accepted
     )
@@ -156,21 +169,33 @@ class LLMFeedbackOutput(BaseModel):
     user_prompt: str
 
 @app.route('/llm/generate', methods=['POST'])
-@validate
+@validate()
 def generate_description(body: LLMInput) -> LLMOutput:
-    data = request.json
-    # Implement logic to generate a description based on the provided data
-    description = {"description": "Generated Description"}
-    return jsonify(description), 201
+     # Process the data as needed
+    system = body.system_prompt
+    user = body.user_prompt
+    if system:
+        messages = [{'role': 'system', 'content': system}]
+    else:
+        messages = [{'role': 'user', 'content': user}]
+    response = ollama.chat(model='tinyllama', messages=messages)
+    response = response.get('message', {})
+    response_text = response.get('content', 'No response generated')
+    return LLMOutput(response=str(response_text)), 201
 
 
 @app.route('/llm/feedback', methods=['POST'])
+@validate()
 def description_feedback(body: LLMFeedbackInput) -> LLMFeedbackOutput:
-    data = request.json
     # Implement logic to process feedback for a description
-    feedback = {"message": "Description feedback received"}
-    return jsonify(feedback), 200
+    conn = sqlite3.connect("player.db")
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS feedback (id INT AUTO_INCREMENT PRIMARY KEY, text NOT NULL)")   
+    cursor.execute("INSERT INTO feedback (text) VALUES (?)", (body.feedback,))
+    conn.commit()
+    conn.close()
+    return jsonify({"system_prompt":body.feedback, "user_prompt": body.feedback}), 200
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=False)
+    app.run(host="0.0.0.0", debug=True)
