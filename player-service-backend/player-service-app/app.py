@@ -60,7 +60,7 @@ def update_column(id):
 
 @app.route('/v1/chat/list-models')
 def list_models():
-    return jsonify(ollama.list())
+    return jsonify({"response": str(ollama.list())})
 
 @app.route('/v1/chat', methods=['POST'])
 def chat():
