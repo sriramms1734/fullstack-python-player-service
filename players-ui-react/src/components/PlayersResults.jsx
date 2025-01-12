@@ -13,15 +13,27 @@ function PlayerResults()  {
     const [country, setCountry] = useState('');
     const {data}  = useContext(MyContext);
     const [newObj, setNewObj] = useState({});
-
+    const [offset, setOffset] = useState(10);
+    const [wholePlayers, setWholePlayers] = useState([]);
     
     useEffect(() => {
         if(data){
             convertKeys(data.formData);
         } 
-        playerFetch(null, 'players');
+        playerFetch(null, 'players', 10, offset);
+        setWholePlayers(players);
     }, [data]);
 
+    const moveToNextpage = async() => {
+        setOffset(offset+10);
+       await playerFetch(null, 'players', 10, offset);
+    }
+    const moveToPrevpage = async () => {
+        if(offset>=10){
+            setOffset(offset-10);
+            await playerFetch(null, 'players', 10, offset);
+        }
+    }
     
     const convertKeys = (form)=> {
         for (const key in form) {
@@ -29,10 +41,10 @@ function PlayerResults()  {
             newObj[newKey] = form[key];
         }
     }
-    const playerFetch = async (ep, prop) => {
-        const data = await fetchData(ep);  
-        const subsetOfPlayers = data[prop] || [];
-        setPlayers(subsetOfPlayers);
+    const playerFetch = async (ep, prop, limit=10, offset=10) => {
+            const data = await fetchData(ep, limit, offset);  
+            const subsetOfPlayers = data[prop] || [];
+            setPlayers(subsetOfPlayers);
     }
 
     const handleSearchById = async (input) => {
@@ -79,7 +91,7 @@ function PlayerResults()  {
             
             <div className="players-results-section">
                 {/* Body of results should go here */}
-                <PaginatedPlayers players={players} itemsPerPage={10} />,
+                <PaginatedPlayers moveToNextpage={moveToNextpage} moveToPrevpage={moveToPrevpage} players={players} itemsPerPage={offset} />,
             </div>
             <div className="player-results-generate-team">
                 <div>

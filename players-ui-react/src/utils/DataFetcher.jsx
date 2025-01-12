@@ -1,5 +1,5 @@
-export default async function fetchData(ep) {
-    const endpoint = ep || '/v1/players'
+export default async function fetchData(ep, limit=10, offset=10) {
+    const endpoint = ep || `/v1/players?limit=${limit}&offset=${offset}`
     try {
         const response = await fetch(endpoint);
         return response.json();
