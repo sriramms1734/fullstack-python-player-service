@@ -17,7 +17,7 @@ df.to_sql('players', con=engine, if_exists='replace', index=False)
 @app.route('/v1/players', methods=['GET'])
 def get_players():
     player_service = PlayerService()
-    result = player_service.get_all_players()
+    result = player_service.get_all_players(request.args.get('limit'),request.args.get('offset'))
     return {"players": result}
 
 @app.route('/v1/players/<string:player>')

@@ -7,8 +7,14 @@ class PlayerService:
         self.conn = conn
         self.cursor = conn.cursor()
 
-    def get_all_players(self):
-        query = "SELECT * FROM players"
+    def get_all_players(self, limit=10, offset=10):
+        if limit is None: 
+            limit = 10
+        if offset is None:
+            offset = 10;    
+        print(f"{limit} {offset}")
+        query = "SELECT * FROM players LIMIT {limit} OFFSET {offset}".format(limit=limit, offset=offset)
+        print(query)
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []
@@ -18,7 +24,7 @@ class PlayerService:
 
         return response
 
-    def search_by_player(self, player_id):
+    def search_by_player(self, player_id):  
         query = "SELECT * FROM players WHERE playerId='{}'".format(player_id)
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
