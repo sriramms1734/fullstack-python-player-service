@@ -4,6 +4,7 @@ import {validateId, validateCountryCode} from "../utils";
 import fetchData, { postData } from "../utils/DataFetcher";
 import DynamicForm from './DynamicForm';
 import { MyContext } from './MyProvider';
+import PaginatedPlayers from './PaginatedPlayers';
 
 function PlayerResults()  {
 
@@ -30,7 +31,7 @@ function PlayerResults()  {
     }
     const playerFetch = async (ep, prop) => {
         const data = await fetchData(ep);  
-        const subsetOfPlayers = data[prop]?.slice(0,10) || [];
+        const subsetOfPlayers = data[prop] || [];
         setPlayers(subsetOfPlayers);
     }
 
@@ -78,14 +79,7 @@ function PlayerResults()  {
             
             <div className="players-results-section">
                 {/* Body of results should go here */}
-                {players.map((player) => {
-                    return(
-                        <div style={{"display": "flex", "gap": "1vh"}}>
-                            <div>{player.playerId}</div>
-                            <div>{player.birthCountry}</div>
-                        </div>
-                    )
-                })}
+                <PaginatedPlayers players={players} itemsPerPage={10} />,
             </div>
             <div className="player-results-generate-team">
                 <div>
