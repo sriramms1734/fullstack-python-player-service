@@ -97,7 +97,7 @@ function PlayerResults()  {
                     <DynamicForm/>
                     <button onClick={(e)=>generateTeam( {features:newObj, "team_size": 10})}>Generate Team</button>
                     <div className="json-viewer">
-                        <h3>Generated JSON Data:</h3>
+                        <h3>Generated Team:</h3>
                         <pre>{JSON.stringify(team, null, 2)}</pre>
                     </div>
                     
