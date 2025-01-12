@@ -1,5 +1,6 @@
 import sqlite3
 from sqlalchemy import create_engine
+import Levenshtein
 
 class PlayerService:
     def __init__(self):
@@ -45,8 +46,10 @@ class PlayerService:
     # sriram
     def search_fuzzy_text_player(self, text):
         text = "%{}%".format(text)  # Prepare the text for the LIKE clause
-        query = "SELECT * FROM players WHERE (coalesce(playerId, '') || coalesce(nameGiven, '')) LIKE ?"
-        players = self.cursor.execute(query, (text,)).fetchall()
+        max_distance = 3
+        self.conn.create_function("levenshtein", 2, Levenshtein.distance)
+        query = "SELECT * FROM players WHERE nameGiven IS NOT NULL AND levenshtein(nameGiven, ?) <= ?"
+        players = self.cursor.execute(query, (text, max_distance,)).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []
 
