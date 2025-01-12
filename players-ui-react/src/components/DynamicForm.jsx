@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { MyContext } from './MyProvider';
+import '../styling/PlayersMain.css';
 
 const DynamicForm = () => {
   const { data, setData } = useContext(MyContext);
@@ -54,7 +55,7 @@ const DynamicForm = () => {
   }
 
   return (
-    <span>
+    <div className="dynamic-form-container">
       {fields.map((field) => (
         <div key={field.name}>
           <label htmlFor={field.name}>{field.name}:</label>
@@ -79,7 +80,7 @@ const DynamicForm = () => {
           )}
         </div>
       ))}
-    </span>
+    </div>
   );
 };
 

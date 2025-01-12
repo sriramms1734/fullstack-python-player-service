@@ -14,14 +14,13 @@ function PlayerResults()  {
     const {data}  = useContext(MyContext);
     const [newObj, setNewObj] = useState({});
     const [offset, setOffset] = useState(10);
-    const [wholePlayers, setWholePlayers] = useState([]);
+    const [team, setTeam] = useState({});
     
     useEffect(() => {
         if(data){
             convertKeys(data.formData);
         } 
         playerFetch(null, 'players', 10, offset);
-        setWholePlayers(players);
     }, [data]);
 
     const moveToNextpage = async() => {
@@ -64,6 +63,7 @@ function PlayerResults()  {
     const generateTeam = async (bodyInput) => {
         try{
         const data = await postData(bodyInput);
+        setTeam(data);
         } catch (error) {
             console.error('Error fetching data:', error);
           } finally {
@@ -73,7 +73,7 @@ function PlayerResults()  {
 
  return (
     <div>
-        {JSON.stringify(newObj, null, 2)}
+        
         <div className="player-results">
             <div className="player-results-header">
                 <div className="player-results-search">
@@ -92,12 +92,16 @@ function PlayerResults()  {
                 {/* Body of results should go here */}
                 <PaginatedPlayers moveToNextpage={moveToNextpage} moveToPrevpage={moveToPrevpage} players={players} itemsPerPage={offset} />,
             </div>
-            <div className="player-results-generate-team">
-                <div>
+            <div>
+                <div className="player-results-generate-team">
                     <DynamicForm/>
                     <button onClick={(e)=>generateTeam( {features:newObj, "team_size": 10})}>Generate Team</button>
-                </div> :
-                ''
+                    <div className="json-viewer">
+                        <h3>Generated JSON Data:</h3>
+                        <pre>{JSON.stringify(team, null, 2)}</pre>
+                    </div>
+                    
+                </div>
             </div>
         </div>
       </div>

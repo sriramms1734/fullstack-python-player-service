@@ -77,6 +77,19 @@ def chat():
     except Exception as e:
         # Handle errors and return an appropriate response
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/team/generate', methods=['POST'])
+def teamGenerate():
+    # Process the data as needed
+    try:
+        target_url = f"http://localhost:{5000}/team/generate"
+        data = request.get_json()
+        response = requests.post(target_url, json=data)
+        # Return the response from the target server
+        return jsonify(response.json()), response.status_code
+    except Exception as e:
+        # Handle errors and return an appropriate response
+        return jsonify({"error": str(e)}), 500    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=False)

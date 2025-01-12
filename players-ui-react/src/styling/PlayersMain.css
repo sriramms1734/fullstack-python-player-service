@@ -14,14 +14,14 @@
 }
 
 .players-header {
-    background-color: #282c34;
-    min-height: 10vh;
+    background-color: #f6f7f8;
+    min-height: 7vh;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    font-size: calc(14px);
+    font-weight: 300;
 }
 
 .player-results-header {
@@ -32,10 +32,45 @@
 }
 .player-results-generate-team {
     display: flex;
-    gap: 10px; /* Optional: Adds spacing between items */
-    margin-top: 2vh;
-    gap: 2vh;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
+
+.dynamic-form-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping into multiple rows */
+    gap: 10px; /* Spacing between fields */
+    justify-content: flex-start; /* Aligns fields to the left */
+    width: 100%; /* Full width to fit parent container */
+    box-sizing: border-box; /* Ensures padding is included in width */
+}
+
+.dynamic-form-container div {
+    flex: 1 1 calc(25% - 10px); /* Responsive: Adjust field width */
+    min-width: 200px; /* Prevent fields from getting too small */
+}
+
+.dynamic-form-container label {
+    display: block; /* Stack label above the input field */
+    margin-bottom: 5px; /* Space between label and input */
+    font-size: 0.9rem;
+}
+
+.dynamic-form-container input,
+.dynamic-form-container select {
+    width: 100%; /* Ensure input fields stretch to the container's width */
+    padding: 5px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.player-results-generate-team button {
+    margin-top: 20px; /* Add spacing above the button */
+    align-self: center; /* Center the button */
+}
+
+
 .player-results-search {
     gap: 1vh;
     display: flex;
@@ -56,4 +91,17 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+.json-viewer {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap; /* Ensures wrapping for long JSON lines */
+    overflow-x: auto; /* Horizontal scroll for long JSON */
 }
