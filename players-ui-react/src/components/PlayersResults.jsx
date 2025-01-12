@@ -64,7 +64,6 @@ function PlayerResults()  {
     const generateTeam = async (bodyInput) => {
         try{
         const data = await postData(bodyInput);
-       // setPlayers(data);
         } catch (error) {
             console.error('Error fetching data:', error);
           } finally {
@@ -96,7 +95,7 @@ function PlayerResults()  {
             <div className="player-results-generate-team">
                 <div>
                     <DynamicForm/>
-                    <button onClick={(e)=>generateTeam({"seed_id":"abbotji01","team_size":10})}>Generate Team</button>
+                    <button onClick={(e)=>generateTeam( {features:newObj, "team_size": 10})}>Generate Team</button>
                 </div> :
                 ''
             </div>

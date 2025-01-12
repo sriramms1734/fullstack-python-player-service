@@ -9,9 +9,8 @@ export default async function fetchData(ep, limit=10, offset=10) {
 };
 
 export async function postData(bodyInput) {
-    const endpoint = 'http://localhost:5200/team/generate';
     try {
-        const response = await fetch(endpoint, {
+        const response = await fetch('/team/generate', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
