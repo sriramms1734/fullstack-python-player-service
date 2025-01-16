@@ -16,18 +16,28 @@ df.to_sql('players', con=engine, if_exists='replace', index=False)
 @app.route('/v1/players', methods=['GET'])
 def get_players():
     player_service = PlayerService()
-    result = player_service.get_all_players()
+    offset = request.args.get('offset')
+    limit = request.args.get('limit')
+    result = player_service.get_all_players(limit, offset)
     return {"players": result}
 
 @app.route('/v1/players/<string:player_id>')
 def query_player_id(player_id):
     player_service = PlayerService()
     result = player_service.search_by_player(player_id)
-
     if len(result) == 0:
         return {"error": "No record found with player_id={}".format(player_id)}
     else:
         return {"player": result}
+
+@app.route('/v1/players/player_country/<string:player_country>')
+def query_player_country(player_country):
+    player_service = PlayerService()
+    result = player_service.search_by_player_country(player_country)
+    if len(result) == 0:
+        return {"error": "No record found with player_country={}".format(player_country)}
+    else:
+        return {"player": result}    
 
 @app.route('/v1/chat/list-models')
 def list_models():
