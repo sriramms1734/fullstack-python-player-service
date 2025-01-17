@@ -33,6 +33,7 @@ player_stats = {
 
 # list of feedback exclusions
 exclude_db = {}
+feedback = ''
 
 app = Flask(__name__)
 
@@ -166,22 +167,23 @@ def generate_description(body: LLMInput) -> LLMOutput:
     if data["user_prompt"] is None: 
         json={
             'role': 'system',
-            'content': data["system_prompt"]
+            'content': f"{data['system_prompt']}; feedback you received is {feedback}"
         }
     else: 
         json={
             'role': 'user',
-            'content': data["user_prompt"]
+            'content': f"{data['user_prompt']}; feedback you received is {feedback}"
         }  
     response = requests.post(target_url, json=json)
-        # Return the response from the target server
     return jsonify(response.json()), response.status_code
 
 @app.route('/llm/feedback', methods=['POST'])
+@validate()
 def description_feedback(body: LLMFeedbackInput) -> LLMFeedbackOutput:
     data = request.json
     # Implement logic to process feedback for a description
-    feedback = {"message": "Description feedback received"}
+    global feedback 
+    feedback = data["feedback"]
     return jsonify(feedback), 200
 
 
