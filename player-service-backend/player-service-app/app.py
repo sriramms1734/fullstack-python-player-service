@@ -33,7 +33,9 @@ def query_player_id(player_id):
 @app.route('/v1/players/player_country/<string:player_country>')
 def query_player_country(player_country):
     player_service = PlayerService()
-    result = player_service.search_by_player_country(player_country)
+    offset = request.args.get('offset')
+    limit = request.args.get('limit')
+    result = player_service.search_by_player_country(player_country,limit, offset)
     if len(result) == 0:
         return {"error": "No record found with player_country={}".format(player_country)}
     else:

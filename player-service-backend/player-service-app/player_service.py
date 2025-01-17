@@ -18,8 +18,8 @@ class PlayerService:
 
         return response
     
-    def search_by_player_country(self, player_country):
-        query = "SELECT * FROM players where birthCountry like '%{}%'".format(player_country)
+    def search_by_player_country(self, player_country, limit, offset):
+        query = "SELECT * FROM players where birthCountry like '%{}%' LIMIT {} OFFSET {}".format(player_country, limit, offset)
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []
