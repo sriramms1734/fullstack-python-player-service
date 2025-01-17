@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {validateId, validateCountryCode} from "../utils";
-import fetchData from "../utils/DataFetcher";
+import {fetchData, postData} from "../utils/DataFetcher";
 import Pagination from './Pagination';
 import { MyContext } from '../Provider';
 
@@ -9,9 +9,12 @@ function PlayerResults() {
 
     const [players, setPlayers] = useState([]);
     const [playerID, setPlayerId] = useState('');
+    const [seedId, setSeedId] = useState('');
     const [country, setCountry] = useState('');
     const [pagePlayers, setPagePlayers] = useState([])
     const {fullStore, setFullStore} = useContext(MyContext)
+    const [team, setTeam] = useState({})
+    const [teamSize, setTeamSize] = useState(10)
     useEffect(() => {
         fetchData('',fullStore.limit, fullStore.offset)
             .then(data => {
@@ -29,6 +32,12 @@ function PlayerResults() {
             const data = await fetchData(input, fullStore.limit, fullStore.offset)
             setPlayers(data.player.slice(0,10));
         }
+    }
+
+    const generateTeamBySeedId = async(endpoint, body) => {
+            // do something
+            const data = await postData(endpoint, body)
+            setTeam(data);
     }
 
     const handleSearchByCountry = async(input) => {
@@ -74,6 +83,17 @@ function PlayerResults() {
                     />
             </div>
          </div>
+         <div className="player-results-llm">
+             <div>
+                 <label>Seed ID:</label>
+                 <input type="text" value={seedId} onChange={(e)=> setSeedId(e.target.value)}/>
+                 <label>Team Size:</label>
+                 <input type="text" value={teamSize} onChange={(e)=> setTeamSize(e.target.value)}/>
+                 <button onClick={()=>generateTeamBySeedId('/v1/team/generate', {seed_id: seedId, team_size: teamSize})}>Generate Team</button>
+             </div>
+         </div>
+         <div><pre>{JSON.stringify(team, null, 2) }</pre></div>
+
 
 
     </div>

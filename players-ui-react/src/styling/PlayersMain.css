@@ -30,9 +30,15 @@
     margin-top: 2vh;
     gap: 2vh;
 }
+.player-results-llm {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 12vh;
+    gap: 2vh;
+}
 .player-results-search {
     gap: 1vh;
-    display: flex;
 }
 
 .players-results-section {

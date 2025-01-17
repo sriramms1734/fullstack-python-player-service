@@ -10,7 +10,8 @@ from flask import Flask, request, jsonify
 from flask_pydantic import validate
 import joblib
 from pydantic import BaseModel
-
+from flask_cors import CORS
+import requests
 nn_model = joblib.load("team_model.joblib")
 player_db = pd.read_csv("features_db.csv")
 all_players = set(player_db["playerId"])
@@ -35,6 +36,7 @@ exclude_db = {}
 
 app = Flask(__name__)
 
+CORS(app, resources={"/team/generate": {"origins": "*"}})
 
 class TeamException(Exception):
     pass
@@ -134,6 +136,7 @@ def team_feedback(body: TeamFeedbackInput) -> TeamFeedbackOutput:
     # Implement logic to process feedback for a team
     return TeamFeedbackOutput(
         seed_id=seed_id,
+        prediction_id=str(uuid.uuid4()),
         member_id=member_id,
         accepted=accepted
     )
@@ -154,13 +157,25 @@ class LLMFeedbackOutput(BaseModel):
     user_prompt: str
 
 @app.route('/llm/generate', methods=['POST'])
-@validate
+@validate()
 def generate_description(body: LLMInput) -> LLMOutput:
-    data = request.json
     # Implement logic to generate a description based on the provided data
-    description = {"description": "Generated Description"}
-    return jsonify(description), 201
-
+    target_url = f"http://localhost:{8080}/v1/chat"
+    data = request.get_json()
+    json = {}
+    if data["user_prompt"] is None: 
+        json={
+            'role': 'system',
+            'content': data["system_prompt"]
+        }
+    else: 
+        json={
+            'role': 'user',
+            'content': data["user_prompt"]
+        }  
+    response = requests.post(target_url, json=json)
+        # Return the response from the target server
+    return jsonify(response.json()), response.status_code
 
 @app.route('/llm/feedback', methods=['POST'])
 def description_feedback(body: LLMFeedbackInput) -> LLMFeedbackOutput:

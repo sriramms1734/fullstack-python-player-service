@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 import pandas as pd
-import sqlite3
 from sqlalchemy import create_engine
 from player_service import PlayerService
 import ollama
+import requests
 
 app = Flask(__name__)
 
@@ -46,13 +46,31 @@ def list_models():
 @app.route('/v1/chat', methods=['POST'])
 def chat():
     # Process the data as needed
-    response = ollama.chat(model='tinyllama', messages=[
+    body = request.get_json()
+    if body is None: 
+        messages = [
         {
             'role': 'user',
             'content': 'Why is the sky blue?',
         },
-    ])
+    ] 
+    else: 
+        messages = [body]
+    response = ollama.chat(model='tinyllama', messages=messages)
     return jsonify(response), 200
 
+@app.route('/v1/team/generate', methods=['POST'])
+def generate_team():
+    # Process the data as needed
+    try:
+        target_url = f"http://localhost:{5000}/team/generate"
+        data = request.get_json()
+        response = requests.post(target_url, json=data)
+        # Return the response from the target server
+        return jsonify(response.json()), response.status_code
+    except Exception as e:
+        # Handle errors and return an appropriate response
+        return jsonify({"error": str(e)}), 500 
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
