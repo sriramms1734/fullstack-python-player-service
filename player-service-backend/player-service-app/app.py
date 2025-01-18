@@ -16,9 +16,10 @@ df.to_sql('players', con=engine, if_exists='replace', index=False)
 @app.route('/v1/players', methods=['GET'])
 def get_players():
     player_service = PlayerService()
-    offset = request.args.get('offset')
-    limit = request.args.get('limit')
-    result = player_service.get_all_players(limit, offset)
+    isAdmin = request.args.get('isAdmin')
+    if isAdmin not in ['true', 'false', 'none']:
+        return [], 400
+    result = player_service.get_all_players(isAdmin)
     return {"players": result}
 
 @app.route('/v1/players/<string:player_id>')
@@ -33,9 +34,7 @@ def query_player_id(player_id):
 @app.route('/v1/players/player_country/<string:player_country>')
 def query_player_country(player_country):
     player_service = PlayerService()
-    offset = request.args.get('offset')
-    limit = request.args.get('limit')
-    result = player_service.search_by_player_country(player_country,limit, offset)
+    result = player_service.search_by_player_country(player_country)
     if len(result) == 0:
         return {"error": "No record found with player_country={}".format(player_country)}
     else:
@@ -74,5 +73,145 @@ def generate_team():
         # Handle errors and return an appropriate response
         return jsonify({"error": str(e)}), 500 
     
+    
+@app.route('/v1/players/nickname/<string:player_country>', methods=['GET'])
+def generate_nickname(player_country):
+    """
+    Generate a nickname for a player based on their country using their first and last name.
+    """
+    try:
+        # Query the database to find players from the specified country
+        player_service = PlayerService()
+        result = player_service.search_by_player_country(player_country)
+        
+        if len(result)==0:
+            return jsonify({"error": f"No players found for country={player_country}"}), 404
+        
+        # Extract the first and last name
+        name_first, name_last = result[0]["nameFirst"], result[0]["nameLast"]
+        
+        # Use Ollama to generate a nickname
+        system_prompt = (
+            "You are a creative assistant. Generate a fun and unique nickname "
+            "using the given first and last name."
+        )
+        user_prompt = f"Generate a nickname for {name_first} {name_last}."
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        
+        response = ollama.chat(model='tinyllama', messages=messages)
+        if response.get("message", {}).get("content"):
+            return jsonify({
+                "country": player_country,
+                "player": f"{name_first} {name_last}",
+                "nickname": response.get("message", {}).get("content")
+            }), 200
+        else:
+            return jsonify({"error": "Failed to generate a nickname"}), 500
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def test_generate_nickname_success(client, mock_player_service, mock_ollama_chat):
+    """
+    Test successful nickname generation.
+    """
+    # Mock PlayerService response
+    mock_player_service.search_by_player_country.return_value = [
+        {"nameFirst": "Jacob", "nameLast": "Bern"}
+    ]
+    
+    # Mock Ollama chat response
+    mock_ollama_chat.return_value = {
+        "message": {"content": "Johnny D"}
+    }
+
+    # Call the endpoint
+    response = client.get('/v1/players/nickname/USA')
+
+    # Validate the response
+    assert response.status_code == 200
+    assert response.json == {
+        "country": "USA",
+        "player": "Jacob Ben",
+        "nickname": "Johnny D"
+    }
+
+    # Ensure the service and chat were called correctly
+    mock_player_service.search_by_player_country.assert_called_once_with("USA")
+    mock_ollama_chat.assert_called_once_with(
+        model="tinyllama",
+        messages=[
+            {"role": "system", "content": "You are a creative assistant. Generate a fun and unique nickname using the given first and last name."},
+            {"role": "user", "content": "Generate a nickname for Kap lane."},
+        ]
+    )
+
+def test_generate_nickname_no_players(client, mock_player_service):
+    """
+    Test when no players are found for a given country.
+    """
+    # Mock PlayerService response
+    mock_player_service.search_by_player_country.return_value = []
+
+    # Call the endpoint
+    response = client.get('/v1/players/nickname/Jupiter')
+
+    # Validate the response
+    assert response.status_code == 404
+    assert response.json == {"error": "No players found for country=Mars"}
+
+    # Ensure the service was called correctly
+    mock_player_service.search_by_player_country.assert_called_once_with("Mars")
+
+def test_generate_nickname_ollama_failure(client, mock_player_service, mock_ollama_chat):
+    """
+    Test when Ollama fails to generate a nickname.
+    """
+    # Mock PlayerService response
+    mock_player_service.search_by_player_country.return_value = [
+        {"nameFirst": "Fred", "nameLast": "Merc"}
+    ]
+    
+    # Mock Ollama chat response
+    mock_ollama_chat.return_value = {}
+
+    # Call the endpoint
+    response = client.get('/v1/players/nickname/USA')
+
+    # Validate the response
+    assert response.status_code == 500
+    assert response.json == {"error": "Failed to generate a nickname"}
+
+    # Ensure the service and chat were called correctly
+    mock_player_service.search_by_player_country.assert_called_once_with("USA")
+    mock_ollama_chat.assert_called_once_with(
+        model="tinyllama",
+        messages=[
+            {"role": "system", "content": "You are a creative assistant. Generate a nickname using the given first and last name."},
+            {"role": "user", "content": "Generate a nickname for Fred Mercury."},
+        ]
+    )
+
+def test_generate_nickname_exception(client, mock_player_service):
+    """
+    Test when an exception occurs during processing.
+    """
+    # Mock PlayerService to raise an exception
+    mock_player_service.search_by_player_country.side_effect = Exception("Database error")
+
+    # Call the endpoint
+    response = client.get('/v1/players/nickname/USA')
+
+    # Validate the response
+    assert response.status_code == 500
+    assert response.json == {"error": "Database error"}
+
+    # Ensure the service was called correctly
+    mock_player_service.search_by_player_country.assert_called_once_with("USA")
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

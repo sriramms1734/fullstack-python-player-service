@@ -7,8 +7,13 @@ class PlayerService:
         self.conn = conn
         self.cursor = conn.cursor()
 
-    def get_all_players(self, limit, offset):
-        query = f"SELECT * FROM players LIMIT {limit} OFFSET {offset}"
+    def get_all_players(self, isAdmin):
+        admin = isAdmin.lower()
+        if admin in ['false', 'none']:
+            query = "SELECT nameFirst FROM players"
+        else: 
+            query = "SELECT nameFirst, nameLast FROM players"  
+  
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []
