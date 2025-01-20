@@ -7,8 +7,24 @@ class PlayerService:
         self.conn = conn
         self.cursor = conn.cursor()
 
-    def get_all_players(self):
-        query = "SELECT * FROM players"
+    def get_all_players(self, isAdmin):
+        admin = isAdmin.lower()
+        if admin in ['false', 'none']:
+            query = "SELECT nameFirst FROM players"
+        else: 
+            query = "SELECT nameFirst, nameLast FROM players"  
+  
+        players = self.cursor.execute(query).fetchall()
+        columns = [column[0] for column in self.cursor.description]
+        response = []
+
+        for player in players:
+            response.append(dict(zip(columns,player)))
+
+        return response
+    
+    def search_by_player_country(self, player_country, limit, offset):
+        query = "SELECT * FROM players where birthCountry like '%{}%' LIMIT {} OFFSET {}".format(player_country, limit, offset)
         players = self.cursor.execute(query).fetchall()
         columns = [column[0] for column in self.cursor.description]
         response = []
